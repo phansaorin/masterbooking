@@ -155,7 +155,7 @@ class Festival extends CI_Controller {
 		if($this->input->post('addFestival')){
 			$addFestival  = array(
 				array('field' => 'festivalName','label' => 'Festival Name','rules' => 'trim|required' ),
-                array('field' => 'festivalPhotos','label' => 'Festival Photos','rules' => 'trim|required' ),
+                array('field' => 'txtPhotos','label' => 'Festival Photos','rules' => 'trim|required' ),
 			    array('field' => 'festivalLocation', 'label' => 'Festival Location', 'rules' => 'trim|required') 
             );
 			$this->form_validation->set_rules($addFestival);
@@ -163,7 +163,7 @@ class Festival extends CI_Controller {
                 $this->session->set_userdata('create', show_message('Your input was not success! Please check your data again', 'error'));
             }else{
             	$festivalName = $this->input->post('festivalName');
-                $festivalPhotos = $this->input->post('festivalPhotos');
+                $festivalPhotos = $this->input->post('txtPhotos');
                 $festivalLocation = $this->input->post('festivalLocation');
                 $festivalDetail = $this->input->post('festivalDetail');
             	$this->mod_festival->add_festival($festivalName, $festivalPhotos, $festivalDetail,$festivalLocation);

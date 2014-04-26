@@ -146,7 +146,7 @@ class Customize extends CI_Controller {
                     $result_customize = $this->mod_customize->createCustomize($insert_customize);
                     if($result_customize > 0) {
                         $this->session->set_userdata('create', show_message('<p>'.'Customize was submited successfully ...'.'</p>', 'success'));
-                        redirect('customize/add_customize');
+                        redirect('customize/view_customize/'.$result_customize.'/MjAxNC0wNC0yNCwyMDE0LTA0LTI1');
                     }else{
                         $this->session->set_userdata('create', show_message('<p class="error">'.'Sorry ! You had made any mistake, please try again...'.'</p>', 'error'));
                         $this->load->view('munich_admin', $data);

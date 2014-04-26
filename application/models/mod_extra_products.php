@@ -159,6 +159,7 @@ class Mod_extra_products extends CI_model {
     	$query = $this->db->select("*")
     			 ->join('extraproduct_calendar','extraproduct_calendar.extraproduct_id = extraproduct.ep_id', 'left')
 				 ->join('calendar_available','extraproduct_calendar.calendar_available_id = calendar_available.ca_id', 'left')
+				 ->join('photo','photo.photo_id = extraproduct.photo_id')
 				 ->where("extraproduct.ep_deleted", 0)
 			 	 ->where("extraproduct.ep_id", $ep_id)
 				 ->get("extraproduct");

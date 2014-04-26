@@ -52,12 +52,12 @@
                     <th><?php echo anchor("festival/list_record/Name/" . $sort, "Festival"); ?></th>
                     <th>Detail</th>
                     <th>Action</th>
-                </tr>	
+                </tr>   
                 <?php if ($getAllFestival->num_rows > 0) { ?>
                   <?php foreach ($getAllFestival->result() as $data) { ?>
                         <tr>
-                        	<td>
-                        		<?php echo form_checkbox(
+                            <td>
+                                <?php echo form_checkbox(
                                     array('class' => 'check_checkbox',
                                           'id' => 'check_checkbox', 
                                           'name' => 'check_checkbox[]'
@@ -65,7 +65,7 @@
                                           $data->ftv_id
                                     ); 
                                 ?>
-                        	</td>
+                            </td>
                             <td><?php echo $data->ftv_id; ?></td>
                             <td><?php echo $data->ftv_name; ?></td>
                             <td><?php echo $data->ftv_detail; ?></td>
@@ -73,7 +73,7 @@
                                 <?php
                                 $uri = "";
                                 echo anchor('festival/view_festival/'.$data->ftv_id.'/'.$uri, '<span class="icon-eye-open"></span>')  . '|' .
-                    			      anchor('festival/edit_festival/'.$data->ftv_id.'/'.$uri, '<span class="icon-edit"></span>')  . '|' .
+                                      anchor('festival/edit_festival/'.$data->ftv_id.'/'.$uri, '<span class="icon-edit"></span>')  . '|' .
                                 anchor('festival/deleteFestivalById/' . $data->ftv_id . '/' . $uri, '<span class="icon-trash"></span>', 'title = "Delete" onclick="return confirm(\'Are you sure want to delete this record?\');" data-toggle="tooltip" id="tooltip"');
                                 ;
                                 ?>
@@ -122,17 +122,18 @@
             <div class="form-group">
                 <label class="col-sm-4 control-label">Festival Photo <span class="require">*</span> :</label>
                 <div class="col-sm-7">
-                    <?php 
-                        $photos = array();
-                            if($festivalPhotos->num_rows > 0){
-                                $photos['0'] = "--- select ---";
-                                foreach($festivalPhotos->result() as $value){
-                                    $photos[$value->photo_id] = $value->pho_name;
-                                }
+                    <select id="demo-htmlselect-basic" style="width:400px;" name="txtPhotos">
+                        <?php
+                            if($festivalPhotos->num_rows() > 0){
+                                foreach($festivalPhotos->result() as $value){    
+                                    $exploded = explode('.', $value->pho_source);
+                                    $img = $exploded['0'] . '_thumb.'.$exploded['1'];
+                                    $photos[$value->photo_id]="<option value='".$value->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'. $img).">".$value->pho_name."</option>";
+                                    echo $photos[$value->photo_id];
+                                } 
                             }
-                    echo form_dropdown('festivalPhotos', $photos,'', 'class="form-control"');  
-                    ?>
-                    <span style="color:red;"><?php echo form_error('festivalPhotos'); ?></span>
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="form-group">

@@ -59,6 +59,7 @@ class Mod_accommodation extends CI_model {
             ->join('room_types', 'room_types.rt_id = accommodation.acc_rt_id', 'left')
             ->join('classification', 'classification.clf_id = accommodation.classification_id', 'left')
             ->join('location', 'location.lt_id = accommodation.location_id', 'left')
+            ->join('photo','photo.photo_id = accommodation.photo_id')
             ->join('festival', 'festival.ftv_id = accommodation.acc_ftv_id', 'left')
             ->join('acc_fac','acc_fac.accomodations_id = accommodation.acc_id','left')
             ->join('facilities','acc_fac.facilities_id = facilities.facilities_id','left')

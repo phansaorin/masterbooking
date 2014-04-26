@@ -42,9 +42,9 @@ class Activities extends CI_Controller {
             $config['base_url'] = site_url($controller . "/" . $function);
             $config['uri_segment'] = 3;
         }
-        $config['total_rows'] = MU_Model::count_all_data('activities', array('act_deleted' => 0, 'act_subof'=> 0));
+        $config['total_rows'] = MU_Model::count_all_data('activities', array('act_deleted' => 0));
         $config['per_page'] = 10;
-	$config['next_tag_open'] = '<li>';
+        $config['next_tag_open'] = '<li>';
         $choice = $config["total_rows"] / $config["per_page"];
         $config["num_links"] = round($choice);
         $config['next_tag_close'] = '</li>';
@@ -71,9 +71,9 @@ class Activities extends CI_Controller {
             $data['dashboard'] = "management";
             $controller = $this->uri->segment(1);
             $function = 'search_activities';
-			if($this->input->post('search_from_date')){ $this->session->set_userdata('from_date', $this->input->post('search_from_date'));}else{$this->session->set_userdata('from_date', "");}
-        	if($this->input->post('search_end_date')){ $this->session->set_userdata("end_date", $this->input->post('search_end_date')); }else{ $this->session->set_userdata("end_date", ""); }
-        	if($this->input->post('search_activities_name')){$this->session->set_userdata("activities_name", $this->input->post('search_activities_name'));}else{ $this->session->set_userdata("activities_name", "");}
+            if($this->input->post('search_from_date')){ $this->session->set_userdata('from_date', $this->input->post('search_from_date'));}else{$this->session->set_userdata('from_date', "");}
+            if($this->input->post('search_end_date')){ $this->session->set_userdata("end_date", $this->input->post('search_end_date')); }else{ $this->session->set_userdata("end_date", ""); }
+            if($this->input->post('search_activities_name')){$this->session->set_userdata("activities_name", $this->input->post('search_activities_name'));}else{ $this->session->set_userdata("activities_name", "");}
             if ($this->uri->segment(3) != "" AND !is_numeric($this->uri->segment(3))) {
                 $uri3 = $this->uri->segment(3);
                 $uri4 = $this->uri->segment(4);
@@ -108,7 +108,7 @@ class Activities extends CI_Controller {
             $this->pagination->initialize($config); //function to show all pages
             $page = ($this->uri->segment($config['uri_segment']) && $this->uri->segment($config['uri_segment']) > 0) ? $this->uri->segment($config['uri_segment']) : 0;
             $data['search_activities'] = $this->mod_activities->getSearchActivities($config['per_page'],$page, $sortby, $data['sort'],$this->session->userdata("from_date"), $this->session->userdata("end_date"), $this->session->userdata("activities_name"));
-	    $data['pagination'] = $this->pagination->create_links();
+            $data['pagination'] = $this->pagination->create_links();
             $this->load->view('munich_admin', $data); 
     }
 
@@ -164,13 +164,13 @@ class Activities extends CI_Controller {
             <tr><th>Location </th> <td>'.$lt_name.'</td></tr>
             <tr><th>Festival </th> <td>'.$ftv_name.'</td></tr>
             <tr><th>Supplier </th> <td>'.$spl_name.'</td></tr>
-            <tr><th>Photo </th> <td>'.img(array("src" => "user_uploads/thumbnail/original/".$pho_source,"alt"=>$pho_source,"class"=>"act_img")).'</td></tr>
+            <tr><th>Photos </th> <td>'.img(array("src" => "user_uploads/thumbnail/original/".$pho_source,"alt"=>$pho_source,"class"=>"act_img")).'</td></tr>
             <tr><th>Purchase Price </th> <td>'.$data['detail_activities']['act_purchaseprice'].' $</td></tr>
             <tr><th>Sale Price </th> <td>'.$data['detail_activities']['act_saleprice'].' $</td></tr>
             <tr><th>Original Stock </th> <td>'.$data['detail_activities']['act_originalstock'].'</td></tr>
             <tr><th>Actual Stock </th> <td>'.$data['detail_activities']['act_actualstock'].'</td></tr>
             <tr><th>Date Contract </th> <td>'.$data['detail_activities']['act_organiserdate'].'</td></tr>
-            <tr><th>Paid Date </th> <td>'.$data['detail_activities']['act_payeddate'].'</td></tr>
+            <tr><th>Payed Date </th> <td>'.$data['detail_activities']['act_payeddate'].'</td></tr>
             <tr><th>Deadline </th> <td>'.$data['detail_activities']['act_deadline'].'</td></tr>
             <tr><th>E-Ticket Text </th> <td>'.$data['detail_activities']['act_texteticket'].'</td></tr>
             <tr><th>Booking Text </th> <td>'.$data['detail_activities']['act_bookingtext'].'</td></tr>
@@ -191,7 +191,7 @@ class Activities extends CI_Controller {
         $data['title'] = "View Activities";
         $data['dashboard'] = "management";
         if($this->uri->segment(3) == "temp"){
-    	   $get_id = $this->uri->segment(4);
+           $get_id = $this->uri->segment(4);
         }else{
            $get_id = $this->uri->segment(3);
         }
@@ -223,7 +223,7 @@ class Activities extends CI_Controller {
             <tr><th>Sale Price </th> <td>'. $detail_extraproduct['ep_saleprice'].' $</td></tr>
             <tr><th>Original Stock </th> <td>'. $detail_extraproduct['ep_originalstock'].'</td></tr>
             <tr><th>Actual Stock </th> <td>'. $detail_extraproduct['ep_actualstock'].'</td></tr>
-            <tr><th>Paid Date </th> <td>'. $detail_extraproduct['ep_payeddate'].'</td></tr>
+            <tr><th>Payed Date </th> <td>'. $detail_extraproduct['ep_payeddate'].'</td></tr>
             <tr><th>Deadline </th> <td>'. $detail_extraproduct['ep_deadline'].'</td></tr>
             <tr><th>Booking Text </th> <td>'. $detail_extraproduct['ep_bookingtext'].'</td></tr>
             <tr><th>Admin Text </th> <td>'. $detail_extraproduct['ep_admintext'].'</td></tr>
@@ -333,7 +333,6 @@ class Activities extends CI_Controller {
                     if($date_available) $records_conjection =  $this->mod_activities->insertActDateTime($act_insert, $date_available);
                     if(isset($records_conjection)){ 
                         $this->session->set_userdata('create', show_message('<p>'.'Activity was submited successfully ...'.'</p>', 'success'));
-                        //redirect('activities/add_activities');
                         redirect('activities/view_activities/'.$act_insert);
                     }else{
                         $this->session->set_userdata('create', show_message('<p class="error">'.'Sorry ! You had made any mistake, please try again...'.'</p>', 'error'));
@@ -702,20 +701,20 @@ class Activities extends CI_Controller {
 
     //delete activities by id
     public function deleteActivitiesById($activities_id,$pagination = false){
-  	  $total_count = MU_Model::count_all_data('activities',array('act_deleted' => 0));
-  	  $delete_activities = MU_Model::deleteRecordById('activities',array("act_deleted" => 1) ,array('act_id' => $activities_id));
-  	  if($delete_activities){
-  		  redirect(strtolower(get_class()).'/list_record');
-  	 }
-  }	 
+      $total_count = MU_Model::count_all_data('activities',array('act_deleted' => 0));
+      $delete_activities = MU_Model::deleteRecordById('activities',array("act_deleted" => 1) ,array('act_id' => $activities_id));
+      if($delete_activities){
+          redirect(strtolower(get_class()).'/list_record');
+     }
+  }  
   //end delete activities by id
-	
+    
   //delete multiple activities
   public function deleteMultiActivities(){
-	  $multiCheck = $this->input->post("check_checkbox");
-	  $update['act_deleted'] = 1;
-	  $result = $this->mod_activities->deleteMultipleActivities($update,$multiCheck);
-	  if($result > 0){
+      $multiCheck = $this->input->post("check_checkbox");
+      $update['act_deleted'] = 1;
+      $result = $this->mod_activities->deleteMultipleActivities($update,$multiCheck);
+      if($result > 0){
             $this->session->set_userdata('msg_success', 'The activities have been deleted successfully.');
             echo "t";
         } else {
