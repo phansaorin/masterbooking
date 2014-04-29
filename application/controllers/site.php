@@ -7,7 +7,6 @@ class Site extends MU_Controller {
 
         $this->load->model(array('mod_index','mod_booking','mod_profilefe','mod_fepackage','mod_fecustomize'));
     }
-
     /*
     * index function is a function for load the default page
     * @noparam
@@ -42,6 +41,7 @@ class Site extends MU_Controller {
 	public function morepassenger(){
 		$passID = $this->session->userdata('passengerid');
 		$bkID = $this->input->post('txtBooking');
+		$fe_data['old_gender'] = array('' => '-- Select --', 'F' => 'Female', 'M' => 'Male');
 		if ($this->input->post('addmore_profile')) {
 			// var_dump($this->input->post()); die();
 			$config = array(
@@ -61,20 +61,21 @@ class Site extends MU_Controller {
 			}else{
 				$insert['pass_fname'] =   $this->input->post('fname');
 				$insert['pass_lname'] 	=   $this->input->post('lname');
+				$insert['pass_addby'] 	=   $passID;
 				$insert['pass_password'] =   $this->input->post('password');
 				$insert['pass_email'] =   $this->input->post('email');
 				$insert['pass_phone'] =   $this->input->post('phone');
 				$insert['pass_address'] =   $this->input->post('address');
 				$insert['pass_company'] =   $this->input->post('company');
-				$insert['pass_gender'] =   $this->input->post('gener');
+				$insert['pass_gender'] =   $this->input->post('gender');
 				$insert['pass_status'] = $this->input->post('txtStatus');
 				$insert['pass_deleted'] = 0;
-			  	$resulf = $this->mod_booking->getMorePassenger($insert);
-			    if($resulf){
+			  	$result = $this->mod_booking->getMorePassenger($insert);
+			    if($result){
 			    	$accompany = MU_Model::getForiegnTableName("passenger_booking", array('pbk_bk_id' => $bkID, 'pbk_pass_id' => $passID), 'pbk_pass_come_with');
 			        $accompany = unserialize($accompany);
 			        $newaccompany = $accompany;
-			        $newaccompany[$resulf] = $resulf;			        
+			        $newaccompany[$result] = $result;			        
 			        $newaccompany = serialize($newaccompany);
 			        $updatepassengerbooking = $this->mod_booking->updateaccompany($newaccompany, $bkID, $passID);
 					if($updatepassengerbooking){
@@ -90,7 +91,10 @@ class Site extends MU_Controller {
 	    redirect('site/profile');
 	}
 	public function export_eticket() {
-        $fe_data['users'] = $this->mod_index->exportAllEtichet('user');
+		$bkID = $this->uri->segment(4);
+        $fe_data['eticket_collection'] = $this->mod_index->exportAllEtichet($bkID);
+        // $fe_data['all_accompany'] = $this->mod_index->getAccompany();
+        // var_dump($fe_data['all_accompany']);
         $fe_data['site_setting'] = "export_eticket";
         $this->load->view('index', $fe_data);
     }

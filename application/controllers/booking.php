@@ -41,7 +41,6 @@ class Booking extends MU_Controller {
             }elseif($uri4 == "DESC"){
                 $data['sort'] = "ASC";
             }
-
         }else{
             $sortby = "ID";
             $data['sort'] = "DESC";

@@ -82,7 +82,6 @@ class Mod_booking extends MU_Model {
 		$this->db->insert('passenger_booking', $insertpassbooking);
         return $this->db->insert_id('passenger_booking');
 	}
-
 	/*
 	* public function updateaccompany
 	* @param $bkID, $passID (int), $accompany (array serialize)

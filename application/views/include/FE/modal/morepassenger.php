@@ -104,8 +104,8 @@
                             <label class="col-sm-4 control-label">Gender<span class="require">*</span> :</label>
                                 <div class="col-sm-6">
                                     <?php 
-                                    $txtGender = array('' => '-- Select --', 'F' => 'Female', 'M' => 'Male');
-                                    echo form_dropdown('gender',$txtGender,set_value('gender') ,'class="form-control"'); ?>
+                                    //$txtGender = array('' => '-- Select --', 'F' => 'Female', 'M' => 'Male');
+                                    echo form_dropdown('gender',$old_gender,set_value('gender') ,'class="form-control"'); ?>
                                     <span style="color:red;"><?php echo form_error('gender'); ?></span>
                                 </div>
                             </div>

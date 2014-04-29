@@ -1,3 +1,4 @@
+
 <div class="row">
                 <div class="col-md-4">
                      <?php if ($profile->num_rows > 0) { ?>
@@ -10,6 +11,7 @@
 
                        <div class="table-responsive">
                               <table class="table table-bordered">
+
                                 <tr>
                                         <th>First Name</th> <td><?php echo $row->pass_fname; ?></td>
                                 </tr>
@@ -37,33 +39,38 @@
                     <?php }?>
                 <?php }?>
                   <?php $this->load->view(INCLUDE_FE_MODEL."updateprofile"); ?>
-
-                    <a href="#"><button class="btn btn-default" data-toggle="modal" data-target=".updateprofileuser">Edit Profile</button></a>		
-                            
+                    <a href="#"><button class="btn btn-default" data-toggle="modal" data-target=".updateprofileuser">Edit Profile</button></a>
                 </div>
-                  
-            <div class="col-md-8">
-                    <div class="table-responsive">
+          <div class="col-md-8">
+             <?php $this->load->view(INCLUDE_FE_MODEL."morepassenger"); ?> 
+                    <div class="table-responsive"><a href="#">
+                      
+                        <button class="btn-info btn-sm" data-toggle="modal" data-target=".addmorepassenger">More Passenger</button></a>
                         <h2>Passenger Booking information</h2>
                         <table class="table table-bordered">
                             <tr> 
                                 <!-- <th>Passenger come with</th> -->
+                                <th>NO</th>
                                 <th>Booking date</th>
                                 <th>Arrival date</th>
                                 <th>Booking total people</th>
                                 <th>Booking pay date</th>
                                 <th>Booking pay prices</th>
+                                <th>Action</th>
+
                             </tr>
-                        <tbody class="tbl_body">	
+                        <tbody class="tbl_body">
                     <?php if ($passengerbooking_info->num_rows > 0) { ?>
                        <?php foreach($passengerbooking_info->result() as $row) { ?>
                             <tr>
                                     <!-- <td><?php// echo $row->pbk_pass_come_with; ?></td> -->
+                                    <td><?php echo $row->bk_id;?></td>
                                     <td><?php echo $row->bk_date; ?></td>
                                     <td><?php echo $row->bk_arrival_date; ?></td>
                                     <td><?php echo $row->bk_total_people; ?></td>
                                     <td><?php echo $row->bk_pay_date; ?></td>
                                     <td><?php echo $row->bk_pay_price; ?></td>
+                                    <td><?php echo anchor ('site/export_eticket/'.$row->bk_id,'Export E-tickit','title="Print"');?></td>
                             </tr>
                        <?php }?>
                 <?php }?>
