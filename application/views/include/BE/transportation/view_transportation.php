@@ -8,6 +8,8 @@
 <?php
     if($getUpdateTransportation->num_rows() > 0){
         foreach($getUpdateTransportation->result() as $value){
+            $exploded = explode('.', $value->pho_source);
+            $pho_source = $exploded['0'].'_thumb.'.$exploded['1'];
             $lc         = $value->tp_pickuplocation;
             $ftv        = $value->tp_ftv_id;
             $chosimg    = $value->photo_id;
@@ -178,23 +180,16 @@
         <div class="col-sm-4">
             <select id="demo-htmlselect-basic" style="width:400px;" name="txtPhotos">
                 <?php
-                    if($txtPhotos->num_rows > 0){
-                        foreach($txtPhotos->result() as $value){  
-                            $id = 1;
-                            if ($this->uri->segment(3)) {
-                                $id = $this->uri->segment(3) + 1;
-                            } else {
-                                $id = 1;
-                            } 
-                            $exploded = explode('.', $value->pho_source);
-                            $img = $exploded['0'] . '_thumb.'.$exploded['1'];
-                            if($value->photo_id != $chosimg){
-                                $chosimage = $value->photo_id;
+                    if($txtPhotos->num_rows() > 0){
+                        foreach($txtPhotos->result() as $values){ 
+                            $exploded = explode('.', $values->pho_source);
+                            $image = $exploded['0'].'_thumb.'.$exploded['1'];
+                            if($pho_source == $image){
+                                $photos[$values->photo_id]="<option selected='selected' value='".$values->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'.$image).">".$values->pho_name."</option>";                                   
                             }else{
-                                $chosimage = $chosimg;
+                                $photos[$values->photo_id]="<option value='".$values->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'.$image).">".$values->pho_name."</option>";
                             }
-                            $photos[$value->photo_id]="<option value='".$chosimage."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'. $img).">".$value->pho_name."</option>";
-                            echo $photos[$value->photo_id];
+                            echo $photos[$values->photo_id];
                         } 
                     }
                 ?>

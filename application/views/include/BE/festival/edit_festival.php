@@ -5,6 +5,14 @@
       <li>Edit</li>
     </ol>
     <h1 class="action_page_header">Edit Festival</h1>
+<?php 
+    if($get_festival->num_rows() > 0){
+        foreach($get_festival->result() as $value){
+            $exploded = explode('.', $value->pho_source);
+            $pho_source = $exploded['0'].'_thumb.'.$exploded['1'];
+        }
+    }
+?>
 
 <?php  echo form_open('festival/edit_festival/'.$this->uri->segment(3), 'class="form-horizontal"'); ?>
 <?php
@@ -31,17 +39,22 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Festival Photo <sup class="require">*</sup>:</label>
                 <div class="col-sm-4">
-                    <?php 
-                        $photos = array();
-                            if($festivalPhotos->num_rows > 0){   
-                                foreach($festivalPhotos->result() as $value){
-                                    $photos['0'] = "--- select ---";
-                                    $photos[$value->photo_id] = $value->pho_name;
-
-                                }
+                    <select id="demo-htmlselect-basic" style="width:400px;" name="festivalPhotos">
+                        <?php
+                            if($festivalPhotos->num_rows() > 0){
+                                foreach($festivalPhotos->result() as $values){ 
+                                    $exploded = explode('.', $values->pho_source);
+                                    $image = $exploded['0'].'_thumb.'.$exploded['1'];
+                                    if($pho_source == $image){
+                                        $photos[$values->photo_id]="<option selected='selected' value='".$values->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'.$image).">".$values->pho_name."</option>";                                   
+                                    }else{
+                                        $photos[$values->photo_id]="<option value='".$values->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'.$image).">".$values->pho_name."</option>";
+                                    }
+                                    echo $photos[$values->photo_id];
+                                } 
                             }
-                    echo form_dropdown('old_txtPhotos', $photos, $row->ftv_photo_id, 'class="form-control"');  
-                    ?>
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="form-group">

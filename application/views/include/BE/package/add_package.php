@@ -69,17 +69,18 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Photos <span class="require">*</span> :</label>
             <div class="col-sm-4">
-                <?php 
-                    $photos = array();
-                        if($txtPhotos->num_rows > 0){
-                            $photos['0'] = "--- select ---";
-                            foreach($txtPhotos->result() as $value){
-                                $photos[$value->photo_id] = $value->pho_name;
-                            }
-                        }
-                echo form_dropdown('txtPhotos', $photos,'', 'class="form-control"');  
+            <select id="demo-htmlselect-basic" style="width:400px;" name="txtPhotos">
+                <?php
+                    if($txtPhotos->num_rows() > 0){
+                        foreach($txtPhotos->result() as $value){    
+                            $exploded = explode('.', $value->pho_source);
+                            $img = $exploded['0'] . '_thumb.'.$exploded['1'];
+                            $photos[$value->photo_id]="<option value='".$value->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'. $img).">".$value->pho_name."</option>";
+                            echo $photos[$value->photo_id];
+                        } 
+                    }
                 ?>
-                <span style="color:red;"><?php echo form_error('txtPhotos'); ?></span>
+            </select>
             </div>
         </div>    
         <div class="form-group">

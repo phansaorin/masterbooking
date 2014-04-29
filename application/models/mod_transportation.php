@@ -41,6 +41,7 @@ class Mod_transportation extends CI_model {
     public function getUpdateTransportation($tp_id){
     	$query = $this->db->select("*")
     			 ->join('tp_calendar','transportation.tp_id = tp_calendar.transport_id', 'left')
+                 ->join('photo','photo.photo_id = transportation.photo_id')
 				 ->join('calendar_available','calendar_available.ca_id = tp_calendar.calendar_available_id','left')
 				 ->where("transportation.tp_deleted", 0)
 				 ->where("transportation.tp_id", $tp_id)

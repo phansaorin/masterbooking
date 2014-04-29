@@ -10,6 +10,8 @@
 <?php 
   if($customizeById->num_rows > 0){
     foreach ($customizeById->result() as $value) {
+        $exploded = explode('.', $value->pho_source);
+        $pho_source = $exploded['0'].'_thumb.'.$exploded['1'];
         $txtFrom = $value->cuscon_start_date;
         $txtTo = $value->cuscon_end_date;
         $lc = $value->cuscon_lt_id;
@@ -104,17 +106,22 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">File input <span class="require">*</span> :</label>
             <div class="col-sm-4">
-                <?php 
-                    $photos = array();
-                        if($txtPhotos->num_rows > 0){
-                            $photos['0'] = "--- select ---";
-                            foreach($txtPhotos->result() as $value){
-                                $photos[$value->photo_id] = $value->pho_name;
+            <select id="demo-htmlselect-basic" style="width:400px;" name="txtPhotos">
+                <?php
+                    if($txtPhotos->num_rows() > 0){
+                        foreach($txtPhotos->result() as $values){ 
+                            $exploded = explode('.', $values->pho_source);
+                            $image = $exploded['0'].'_thumb.'.$exploded['1'];
+                            if($pho_source == $image){
+                                $photos[$values->photo_id]="<option selected='selected' value='".$values->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'.$image).">".$values->pho_name."</option>";                                   
+                            }else{
+                                $photos[$values->photo_id]="<option value='".$values->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'.$image).">".$values->pho_name."</option>";
                             }
-                        }
-                echo form_dropdown('txtPhotos', $photos,$chosimg, 'class="form-control"');  
+                            echo $photos[$values->photo_id];
+                        } 
+                    }
                 ?>
-                <span style="color:red;"><?php echo form_error('txtPhotos'); ?></span>
+            </select>
             </div>
         </div>
         <div class="form-group">

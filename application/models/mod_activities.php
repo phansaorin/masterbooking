@@ -41,10 +41,11 @@ class Mod_activities extends CI_model {
     public function getUpdateActivities($act_id){
     	$query = $this->db->select("*")
     			 ->join('acti_calendar','activities.act_id = acti_calendar.activities_id', 'left')
-			 ->join('calendar_available','calendar_available.ca_id = acti_calendar.calendar_available_id','left')
-			 ->where("activities.act_deleted", 0)
-			 ->where("activities.act_id", $act_id)
-			 ->get("activities");
+    			 ->join('calendar_available','calendar_available.ca_id = acti_calendar.calendar_available_id','left')
+                 ->join('photo','photo.photo_id = activities.photo_id')
+    			 ->where("activities.act_deleted", 0)
+    			 ->where("activities.act_id", $act_id)
+    			 ->get("activities");
 		return $query;
     }
 	/*

@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Package extends CI_Controller {
-	
-	public function __construct() {
+    
+    public function __construct() {
         parent::__construct();
         $this->load->model(array('mod_package'));
     }
@@ -59,11 +59,11 @@ class Package extends CI_Controller {
     * @noparam
     * sort, pagination, load view
     */
-	public function search_package(){
-		$data['title'] = "Search packages";
-		$data['dashboard'] = "management";
+    public function search_package(){
+        $data['title'] = "Search packages";
+        $data['dashboard'] = "management";
         if($this->input->post("search_package_name")) $this->session->set_userdata('search_package', $this->input->post("search_package_name")); // else exit();
-		$controller = $this->uri->segment(1);
+        $controller = $this->uri->segment(1);
         $function = $this->uri->segment(2);
         if ($this->uri->segment(3) != "" AND !is_numeric($this->uri->segment(3))) {
             $uri3 = $this->uri->segment(3);
@@ -84,7 +84,7 @@ class Package extends CI_Controller {
         }
         $config['total_rows'] = MU_Model::count_all_data('package_conjection', array('pkcon_deleted' => 0), array('pkcon_name'=> $this->session->userdata('search_package')));
         $config['per_page'] = 10;
-		$config['next_tag_open'] = '<li>';
+        $config['next_tag_open'] = '<li>';
         $choice = $config["total_rows"] / $config["per_page"];
         $config["num_links"] = round($choice);
         $config['next_tag_close'] = '</li>';
@@ -100,8 +100,8 @@ class Package extends CI_Controller {
         $page = ($this->uri->segment($config['uri_segment']) && $this->uri->segment($config['uri_segment']) > 0) ? $this->uri->segment($config['uri_segment']) : 0;
         $data['packages'] = $this->mod_package->getAllSearchPackage($this->session->userdata('search_package'), $config['per_page'], $page, $sortby, $data['sort']);
         $data['pagination'] = $this->pagination->create_links();
-		$this->load->view('munich_admin', $data);
-	}
+        $this->load->view('munich_admin', $data);
+    }
 
     /*
     * public function add_package
@@ -134,7 +134,7 @@ class Package extends CI_Controller {
             $data['txtFrom'] = $insert_package['pkcon_start_date'];
             $data['txtTo']   = $insert_package['pkcon_end_date'];
             $data['status']  = $insert_package['pkcon_status'];
-            $data['chosimg'] = $insert_package['photo_id'];
+            $data['chosimg'] = $insert_package['phoid'];
 
             $config = $this->package_config();
             $this->form_validation->set_rules($config);
@@ -147,7 +147,8 @@ class Package extends CI_Controller {
                     if($result_package > 0) {
                         $this->session->set_userdata('create', show_message('<p>'.'Package was submited successfully ...'.'</p>', 'success'));
                         //redirect('package/add_package');
-                        redirect('package/view_package/'.$insert_package);
+                        // var_dump($result_package); die();
+                        redirect('package/view_package/'.$result_package.'/MjAxNC0wNC0yNCwyMDE0LTA0LTI1');
                     }else{
                         $this->session->set_userdata('create', show_message('<p class="error">'.'Sorry ! You had made any mistake, please try again...'.'</p>', 'error'));
                         $this->load->view('munich_admin', $data);
@@ -162,11 +163,11 @@ class Package extends CI_Controller {
         }
     }
 
-	// view package
-	 public function view_package($pk_id, $date){
+    // view package
+    public function view_package($pk_id, $date){
         $decrypted = base64_decode($date);
         $decrypted_date = explode(",", $decrypted);
-		$data['title'] = "View Packages";
+        $data['title'] = "View Packages";
         $data['dashboard'] = "management";
         $data['packageById'] = $this->mod_package->getPackageById($pk_id);
         $data['pkSelectedAct'] = $this->returnOptionAct($decrypted_date);
@@ -225,7 +226,7 @@ class Package extends CI_Controller {
         }else{  
             $this->load->view('munich_admin', $data); 
         }
-	}
+    }
     // function to save change Activities
     public function saveUpdateActivities($pkID){
         $selectAct = $this->mod_package->getActivitiesPackage($pkID);        

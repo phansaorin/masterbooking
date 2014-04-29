@@ -199,14 +199,8 @@
         <div class="col-sm-4">
             <select id="demo-htmlselect-basic" style="width:400px;" name="txtPhotos">
                 <?php
-                    if($txtPhotos->num_rows > 0){
-                        foreach($txtPhotos->result() as $value){  
-                            $id = 1;
-                            if ($this->uri->segment(3)) {
-                                $id = $this->uri->segment(3) + 1;
-                            } else {
-                                $id = 1;
-                            }  
+                    if($txtPhotos->num_rows() > 0){
+                        foreach($txtPhotos->result() as $value){    
                             $exploded = explode('.', $value->pho_source);
                             $img = $exploded['0'] . '_thumb.'.$exploded['1'];
                             $photos[$value->photo_id]="<option value='".$value->photo_id."' id='demo-htmlselect-basic' data-imagesrc=".site_url('user_uploads/thumbnail/thumb/'. $img).">".$value->pho_name."</option>";

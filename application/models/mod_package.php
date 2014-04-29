@@ -227,7 +227,11 @@ class Mod_package extends MU_Model{
     */
     public function updatePackage($update, $pk_id){
         $this->db->where('pkcon_id', $pk_id);
-        if($this->db->update('package_conjection',$update)){ return true; }else{ return false; }
+        if($this->db->update('package_conjection',$update)){ 
+            return true; 
+        }else{ 
+            return false; 
+        }
     }
 
     /*
